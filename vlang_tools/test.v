@@ -13,7 +13,12 @@ fn main() {
 	f.process()
 
 	//argument will be comeo lowercase and remove '.md' at end
-	mut page := f.page_get("terms_conditions_Websites.md") or {return}
+	mut page := f.page_get("teal_Organization_intro.md")
 	println(page) 
+
+	mut image := f.image_get("3bot_Dashboard.png")
+	println(image) 
+
+	
 
 }

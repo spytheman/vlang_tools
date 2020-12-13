@@ -46,7 +46,7 @@ fn name_fix(name string) string {
 }
 
 //name in form: 'sitename:pagename' or 'pagename'
-pub fn (mut structure SiteStructure) page_get(name string) ?Page {	
+pub fn (mut structure SiteStructure) page_get(name string) Page {	
 	mut name_lower := name_fix(name)
 	if ":" in name_lower {
 		splitted := name_lower.split(":")
@@ -55,15 +55,41 @@ pub fn (mut structure SiteStructure) page_get(name string) ?Page {
 		}
 		sitename := splitted[0]
 		mut site := structure.site_get(sitename)
-		return site.page_get(name_lower) or {return error("")}
+		// return site.page_get(name_lower) or {return error("")}
+		return site.page_get(name_lower)
 	}else{
 
 		for key in structure.sites.keys(){
 			mut site := structure.sites[key]
-			return site.page_get(name_lower) or {continue}
+			if site.page_exists(name_lower) {
+				return site.page_get(name_lower)
+			}
 		}
+		panic("Could not find page: '$name_lower'")
+	}	
 
-		return error ("Could not find page: '$name'")
+}
+
+pub fn (mut structure SiteStructure) image_get(name string) Image {	
+	mut name_lower := name_fix(name)
+	if ":" in name_lower {
+		splitted := name_lower.split(":")
+		if splitted.len !=1 {
+			panic("name needs to be in format 'sitename:imagename' or 'imagename', now '$name_lower'")
+		}
+		sitename := splitted[0]
+		mut site := structure.site_get(sitename)
+		// return site.page_get(name_lower) or {return error("")}
+		return site.image_get(name_lower)
+	}else{
+
+		for key in structure.sites.keys(){
+			mut site := structure.sites[key]
+			if site.image_exists(name_lower) {
+				return site.image_get(name_lower)
+			}
+		}
+		panic("Could not find image: '$name_lower'")
 	}	
 
 }

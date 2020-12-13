@@ -101,18 +101,35 @@ pub fn (mut site Site) process() {
 	}		
 }
 
-pub fn (mut site Site) page_get(name string) ?Page{	
+pub fn (mut site Site) page_get(name string) Page{	
 	mut namelower := name_fix(name)
 	if namelower in site.pages {
 		return site.pages[namelower]
 	}
-	return error("Could not find page $namelower in site ${site.name}")
+	panic("Could not find page $namelower in site ${site.name}")
 }
 
-pub fn (mut site Site) image_get(name string) ?Image{	
+pub fn (mut site Site) page_exists(name string) bool{	
+	mut namelower := name_fix(name)
+	// println(site.pages.keys())
+	if namelower in site.pages {
+		return true
+	}
+	return false
+}
+
+pub fn (mut site Site) image_get(name string) Image{	
 	mut namelower := name_fix(name)
 	if namelower in site.images {
 		return site.images[namelower]
 	}
-	return error("Could not find image $namelower in site ${site.name}")
+	panic("Could not find image $namelower in site ${site.name}")
+}
+
+pub fn (mut site Site) image_exists(name string) bool{	
+	mut namelower := name_fix(name)
+	if namelower in site.images {
+		return true
+	}
+	return false
 }
